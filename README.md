@@ -1,4 +1,4 @@
-# Group-project-2-10-years-after-Black-Saturday
+# Group-project-3-10-years-after-Black-Saturday
 
 Project: Bushfire in Australia 2009/2019 - 2020
 Team Member: Miley Kotamee, Huma Chaudhry, Franco Hung, Sean Scotland

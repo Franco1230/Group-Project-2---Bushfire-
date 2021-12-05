@@ -24,10 +24,10 @@
   <body>
     <div class="container">
         <!-- Add Jumbotron w/ Image URL -->
-        <div class="jumbotron text-center" style="background-image: url(https://news.cgtn.com/news/3d3d414f7a45544f34457a6333566d54/img/3358de90f79c48beb04f693f990ee0d4/3358de90f79c48beb04f693f990ee0d4.jpg); background-size: 100%; height: 500px;">
-          <h1 class="display-4" style="color: white">Mission to Mars</h1>
+        <div class="jumbotron text-center" style="background-image: url(https://content.api.news/v3/images/bin/cfff2476fa35d2f9b3222763af7d21a4); background-size: 100%; height: 330px;">
+          <h1 class="display-4" style="color: white">10 Years after Black Saturday</h1>
           <!-- Add Button with link to mars_app -->
-          <a class="btn btn-lg text-white" style="background-color:grey; color: white" href="/scrape" role="button">Scrape Mars Data</a>
+          <a class="btn btn-lg text-white" style="background-color:grey; color: white" href="/scrape" role="button">Scrape Bushfire Data</a>
         </div>
 
       <!-- Add Recent News -->
@@ -35,7 +35,7 @@
         <div class="col-md-12">
           <div class="media">
             <div class="media-body">
-              <h2 style="color: white"><b>Most Recent Mars News</b></h2>
+              <h2 style="color: white"><b>Most Recent Bushfire News</b></h2>
               <h4 class="media-heading" style="color: white"><b>{{mars.news_title}}</b></h4>
               <h5 style="color: white"><p>{{mars.news_paragraph}}</p></h5>
             </div>
@@ -46,23 +46,23 @@
       <!-- Add Featured Image -->
       <div class="row">
         <div class="col-md-9">
-          <h2 style="color: white"><b>Featured Mars Image</b></h2>
+          <h2 style="color: white"><b>Latest Bushfire Image</b></h2>
             <img src="{{mars.featured_image_url}}" class="img-responsive">
         </div>
         
         <!-- Add Mars HTML Facts Table - Safe used to show table data -->
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="row">
             <h3 style="color: white">Mars Facts</h3>
             <div class="col-md-12" style="color: white">
               {{mars.mars_facts | safe}}
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       
       <!-- Add Mars Hemispheres images -->
-      <div class="row" style="margin-top: 80px;">
+      <!-- <div class="row" style="margin-top: 80px;">
         <div class="page-header">
           <h2 class="text-center" style="color: white"><b>Mars Hemispheres</b></h2>
         </div>
@@ -76,7 +76,7 @@
             </div>
           </div>
           {% endfor %}
-      </div>
+      </div> -->
     </div>
     <!-- Section: Footer -->
     <footer class="page-footer">

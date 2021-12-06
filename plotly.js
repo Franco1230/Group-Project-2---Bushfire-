@@ -29,7 +29,7 @@ d3.csv("Data/clean_fire_data.csv").then(function(fireData) {
 
  // Cast the hours value to a number for each piece of tvData
  fireData.forEach(function(data) {
-    data.hours = +data.hours;
+    data.PercentForestBurnt = +data.PercentForestBurnt;
   });
 
   var barSpacing = 10; // desired space between each bar
@@ -46,9 +46,9 @@ d3.csv("Data/clean_fire_data.csv").then(function(fireData) {
     .append("rect")
     .classed("bar", true)
     .attr("width", d => barWidth)
-    .attr("height", d => d.hours * scaleY)
+    .attr("height", d => d.PercentForestBurnt * scaleY)
     .attr("x", (d, i) => i * (barWidth + barSpacing))
-    .attr("y", d => chartHeight - d.hours * scaleY);
+    .attr("y", d => chartHeight - d.PercentForestBurnt * scaleY);
 }).catch(function(error) {
   console.log(error);
 
@@ -63,7 +63,7 @@ d3.csv("Data/clean_fire_data.csv").then(function(fireData) {
       .style("border-width", "1px")
       .style("border-radius", "5px")
       .html(function(d) {
-        return (`${d.state}<br>Income: $${d.income} <br>People with Healthcare: ${d.healthcare}%`);
+        return (`${d.State}<br>Forest burnt: ${d.PercentForestBurnt}% <br>Total forest (hectares): ${d.TotalForestHectares}`);
       });
 
     // Step 7: Create tooltip in the chart
@@ -87,12 +87,12 @@ d3.csv("Data/clean_fire_data.csv").then(function(fireData) {
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
-      .text("People with Healthcare (%)");
+      .text("Forest Burnt (%)");
 
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 10})`)
       .attr("class", "axisText")
-      .text("Income ($)");
+      .text("States");
 
       chartGroup.append("text")
       .attr("x", (width / 2))             
@@ -100,7 +100,7 @@ d3.csv("Data/clean_fire_data.csv").then(function(fireData) {
       .attr("text-anchor", "middle")  
       .style("font-size", "24px") 
       .style("text-decoration", "underline")  
-      .text("Average Income and Percentage of People With Healthcare in Each State");
+      .text("Total Fire Damage to Flora in Each State");
 
   }).catch(function(error) {
     console.log(error);

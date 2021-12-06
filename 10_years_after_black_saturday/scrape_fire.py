@@ -42,21 +42,22 @@ def scrape():
     print(news_paragraph)
 
 
-    # """ JPL Mars Space Images - Featured Image """
-    # # Connection to JPL Mars Space Images - Featured Image
-    # mars_featured_image_url = "http://spaceimages-mars.com/"
-    # browser.visit(mars_featured_image_url)
+    """ JPL Mars Space Images - Featured Image """
+    # Connect to Featured Space Image site
+    featured_image_url = "http://www.9news.com.au/bushfires"
+    browser.visit(featured_image_url)
 
-    # # HTML Object
-    # html = browser.html
+    # HTML Object
+    html = browser.html
 
-    # # Parse HTML with Beautiful Soup
-    # image_soup = bs(html, parser)
+    # Parse HTML with Beautiful Soup
+    image_soup = bs(html, parser)
 
-    # # Assign the full url string to a variable called "featured_image_url"
-    # featured_image = image_soup.find("img", class_ = "headerimage fade-in")
-    # featured_image_url = mars_featured_image_url + featured_image["src"]
-    # print(featured_image_url)
+    # Assign the full url string to a variable called "featured_image_url"
+    featured_image = image_soup.body.find_all("figure", class_ = "feed__image")
+    for i in featured_image:
+        print(i.img['src'])
+    featured_image_url = i.img["src"]
 
 
     # """ Mars Facts """
@@ -140,7 +141,7 @@ def scrape():
     bushfire["news_paragraph"] = news_paragraph
 
     # Append featured_image_url to mars_data
-    # mars_data["featured_image_url"] = featured_image_url
+    bushfire["featured_image_url"] = featured_image_url
 
     # Append mars_facts to mars_data
     # mars_data["mars_facts"] = mars_facts

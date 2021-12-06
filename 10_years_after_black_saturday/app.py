@@ -1,5 +1,5 @@
 # Dependencies
-import scrape_mars
+import scrape_fire
 from flask_pymongo import PyMongo
 from flask import Flask, render_template, redirect
 
@@ -14,7 +14,7 @@ mongo = PyMongo(app, uri = "mongodb://localhost:27017/bushfire_db")
 def home(): 
 
     # Find data from Mongo DB
-    mars_facts = mongo.db.mars_data.find_one()
+    mars_facts = mongo.db.bushfire.find_one()
 
     # Return template and data
     return render_template("index.html", mars = mars_facts)
@@ -24,10 +24,10 @@ def home():
 def scrape():
 
     # Call to run the scrape function
-    mars_data = scrape_mars.scrape()
+    bushfire = scrape_fire.scrape()
 
     # Update the Mongo DB each time when new scrape happen
-    mongo.db.mars_data.update({}, mars_data, upsert = True)
+    mongo.db.bushfire.update({}, bushfire, upsert = True)
 
     # Back to the home page
     return redirect("/", code = 302)

@@ -57,13 +57,13 @@ def scrape():
     # Assign the full url string to a variable called "featured_image_url"
     featured_image = image_soup.body.find_all("figure", class_ = "feed__image")
     for i in featured_image:
-        print(i.img['src'])
+        print(i.img["src"])
     featured_image_url = i.img["src"]
 
     # Exit Browser
     browser.quit()
     
-    """ Mars Data Dictionary - MongoDB """
+    """ Data Dictionary """
     # Create dictionary for all Mars Data
     bushfire = {}
 

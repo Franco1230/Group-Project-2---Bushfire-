@@ -2,6 +2,7 @@
 import pandas as pd
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
+from sqlalchemy import create_engine
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -59,13 +60,8 @@ def scrape():
         print(i.img['src'])
     featured_image_url = i.img["src"]
 
-
-
-
     # Exit Browser
     browser.quit()
-
-
     
     """ Mars Data Dictionary - MongoDB """
     # Create dictionary for all Mars Data
@@ -73,10 +69,13 @@ def scrape():
 
     # Append news_title and news_paragraph to mars_data
     bushfire["news_title"] = news_title
-    bushfire["news_paragraph"] = news_paragraph
-
-  
+    bushfire["news_paragraph"] = news_paragraph  
     bushfire["featured_image_url"] = featured_image_url
 
-   
+    news_df = pd.DataFrame.from_dict(bushfire, orient = "index")
+    news_df_t = news_df.T
+
+    connection_string = "postgres:HnF071019@localhost:5432/countries_db"
+    engine = create_engine(f"postgresql://{connection_string}")
+
     return bushfire

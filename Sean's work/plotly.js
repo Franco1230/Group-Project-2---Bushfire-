@@ -2,7 +2,7 @@ var svgWidth = 1800;
 var svgHeight = 1300;
 
 var margin = {
-  top: 100,
+  top: 200,
   right: 40,
   bottom: 150,
   left: 60
@@ -101,7 +101,7 @@ chartGroup.append("g")
     // // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      .offset([-10, 0])
+      .offset([-30, 0])
       .style("background-color", "blue")
       .style("border", "solid")
       .style("border-width", "1px")

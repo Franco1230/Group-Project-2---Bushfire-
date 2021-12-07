@@ -60,76 +60,11 @@ def scrape():
     featured_image_url = i.img["src"]
 
 
-    # """ Mars Facts """
-    # # URL for Mars Facts
-    # mars_facts_url = "http://space-facts.com/mars/"
 
-    # # Use Pandas to convert the data to a HTML table string
-    # mars_facts = pd.read_html(mars_facts_url)
-
-    # # Save as DataFrame
-    # mars_facts_df = pd.DataFrame(mars_facts[1])
-
-    # #  Save DataFrame to html
-    # mars_facts = mars_facts_df.to_html(header = True, index = True)
-
-
-    # """ Mars Hemispheres """
-    # # Visit the url for Mars Hemisphere
-    # mars_hemispheres_url = "http://marshemispheres.com/"
-    # browser.visit(mars_hemispheres_url)
-
-    # # HTML Object
-    # html = browser.html
-
-    # # Parse HTML with Beautiful Soup
-    # hemispheres_soup = bs(html, parser)
-
-    # # Each link is located in "div" tag, class "description"
-    # # Find all elements and store in variable
-    # hems_url = hemispheres_soup.find_all("div", class_ = "description")
-
-    # # Create empty list for each Hemisphere URL
-    # hemis_url = []
-
-    # # Append all URL
-    # for hem in hems_url:
-    #     hem_url = hem.find("a")["href"]
-    #     hemis_url.append(hem_url)
-
-    # # Create list of dictionaries called hemisphere_image_urls
-    # hemisphere_image_urls = []
-
-    # # Iterate through all URLs saved in hemis_url
-    # for hemi in hemis_url:
-    #     mars_hem_url = mars_hemispheres_url + hemi
-    #     print(mars_hem_url)
-        
-    #     # Visit to Hemisphere
-    #     browser.visit(mars_hem_url)
-        
-    #     # HTML Object
-    #     html = browser.html
-
-    #     # Parse HTML with Beautiful Soup
-    #     hemi_soup = bs(html, parser)
-
-    #     # Locate each title and save to raw_title, to be cleaned
-    #     raw_title = hemi_soup.find("h2", class_ = "title").text
-        
-    #     # Remove " Enhanced" tag text from each "title" via split on " Enhanced"
-    #     title = raw_title.split(" Enhanced")[0]
-        
-    #     # Find all full-resolution image for all Hemisphere URLs
-    #     img_url = hemi_soup.find("img", class_ = "wide-image")["src"]
-        
-    #     # Append title and img_url to "hemisphere_image_url"
-    #     hemisphere_image_urls.append({"title": title, "img_url": mars_hemispheres_url + img_url})
 
     # Exit Browser
     browser.quit()
 
-    # print(hemisphere_image_urls)
 
     
     """ Mars Data Dictionary - MongoDB """
@@ -140,13 +75,8 @@ def scrape():
     bushfire["news_title"] = news_title
     bushfire["news_paragraph"] = news_paragraph
 
-    # Append featured_image_url to mars_data
+  
     bushfire["featured_image_url"] = featured_image_url
 
-    # Append mars_facts to mars_data
-    # mars_data["mars_facts"] = mars_facts
-
-    # Append hemisphere_image_urls to mars_data
-    # mars_data["hemisphere_image_urls"] = hemisphere_image_urls
-
+   
     return bushfire

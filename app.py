@@ -35,12 +35,12 @@ print(engine.execute('SELECT * FROM fire_location LIMIT 5').fetchall())
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 print(Base.classes.keys())
-fire_loc = Base.classes.forest_damage
+fire_loc = Base.classes.fire_location
 
 # Start a session to query the database
 session = Session(engine)
 
-results = session.query(fire_loc.state).all()
+results = session.query(fire_loc.latitude).all()
 # Unpack 
 all_names = list(np.ravel(results))
 print(all_names)
@@ -55,28 +55,41 @@ print(all_names)
 # # #     return json(data)
 
 # # # Create route that renders index.html
-# # @app.route("/")
-# # def home(): 
+@app.route("/")
+def home(): 
 
-# #     # # Find data from Mongo DB
-# #     # bushfire = mongo.db.bushfire.find_one()
+    # # Find data from Mongo DB
+    # bushfire = mongo.db.bushfire.find_one()
 
-# #     # Return template and data
-# #     lat=db.query(fire_location.latitude).all()
-# #     return render_template("index.html", bushfire = lat)
+    # Return template and data
+    
+    lat=session.query(fire_location.latitude).all()
+    return render_template("index.html", bushfire = lat)
 
 # # # Route that will trigger the scrape function
-# # @app.route("/scrape")
-# # def scrape():
+@app.route("/scrape")
+def scrape():
 
-# #     # Call to run the scrape function
-# #     bushfire = scrape_fire.scrape()
+    # Call to run the scrape function
+    bushfire = scrape_fire.scrape()
 
-# #     # Update the Mongo DB each time when new scrape happen
-# #     mongo.db.bushfire.update({}, bushfire, upsert = True)
+    # Update the Mongo DB each time when new scrape happen
+    mongo.db.bushfire.update({}, bushfire, upsert = True)
 
-# #     # Back to the home page
-# #     return redirect("/", code = 302)
+    # Back to the home page
+    return redirect("/", code = 302)
+
+# # # Route that will trigger the scrape function
+@app.route("/map")
+def map():
+    loc_table=session.query(fire_location).all()
+    return json(loc_table)
+
+# # # Route that will trigger the scrape function
+@app.route("/graph")
+def map():
+    loc_table=session.query(fire_location).all()##
+    return json(loc_table)
 
 if __name__ == "__main__":
     app.run(debug = True)

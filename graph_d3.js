@@ -4,7 +4,7 @@ var svgHeight = 1300;
 var margin = {
   top: 200,
   right: 40,
-  bottom: 150,
+  bottom: 450,
   left: 60
 };
 
@@ -21,7 +21,7 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
-d3.csv("clean_fire_data.csv").then(function(fireData) {
+d3.csv("DataPreProcessing/Data/clean_fire_data.csv").then(function(fireData) {
 
  // Print the tvData
  console.log(fireData);
@@ -63,7 +63,7 @@ chartGroup.append("g")
   .enter()
   .append("rect")
   .attr("class", "bar")
-  .attr("fill", "red")
+  .attr("fill", "blue")
   .attr("x", d => xBandScale(d.State))
   .attr("y", d => yLinearScale(d.PercentForestBurnt))
   .attr("width", xBandScale.bandwidth())
@@ -82,7 +82,7 @@ chartGroup.append("g")
       .text("Forest Burnt (%)");
 
     chartGroup.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
+      .attr("transform", `translate(${width / 2}, ${height + margin.top -100})`)
       .attr("class", "axisText")
       .style("font-size", "30px")
       .text("States");
@@ -102,7 +102,8 @@ chartGroup.append("g")
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([-30, 0])
-      .style("background-color", "blue")
+      .style("background-color", "black")
+      .style("text", "white")
       .style("border", "solid")
       .style("border-width", "1px")
       .style("border-radius", "5px")

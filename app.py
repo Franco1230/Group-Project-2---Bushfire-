@@ -1,40 +1,91 @@
 # Dependencies
-import scrape_fire
-from flask_pymongo import PyMongo
+
+from sqlalchemy import inspect
 from sqlalchemy import create_engine
-from flask import Flask, render_template, redirect
-
+from sqlalchemy.orm import Session
+from sqlalchemy.ext.automap import automap_base
 # Create an instance of Flask
-app = Flask(__name__)
+import os
+import psycopg2
+from sqlalchemy.inspection import inspect
+from sqlalchemy import create_engine
+import numpy as np
+import pandas as pd
+# DATABASE_URL = ''
+# DATABASE_URL='postgresql://postgres:monash123@localhost/bushFire_db'
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+# cur = conn.cursor()
 
-# Use PyMongo to establish Mongo connection
-mongo = PyMongo(app, uri = "mongodb://localhost:27017/bushfire_db")
-# connection_string = "postgres:HnF071019@localhost:5432/bushFire_db"
-# engine = create_engine(f"postgresql://{connection_string}")
 
-# Create route that renders index.html
-@app.route("/")
-def home(): 
 
-    # Find data from Mongo DB
-    bushfire = mongo.db.bushfire.find_one()
-    # bushfire = 
+engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 
-    # Return template and data
-    return render_template("index.html", bushfire = bushfire)
 
-# Route that will trigger the scrape function
-@app.route("/scrape")
-def scrape():
 
-    # Call to run the scrape function
-    bushfire = scrape_fire.scrape()
+# Use Inspector to print the column names and types
+columns= inspector.get_columns('fire_location')
+for column in columns:
+    print(column["name"], column["type"])
 
-    # Update the Mongo DB each time when new scrape happen
-    mongo.db.bushfire.update({}, bushfire, upsert = True)
+# Use `engine.execute` to select and display 
+print(engine.execute('SELECT * FROM fire_location LIMIT 5').fetchall())
 
-    # Back to the home page
-    return redirect("/", code = 302)
+# Reflect Database into ORM class
+Base = automap_base()
+Base.prepare(engine, reflect=True)
+print(Base.classes.keys())
+fire_loc = Base.classes.forest_damage
+
+# Start a session to query the database
+session = Session(engine)
+
+results = session.query(fire_loc.state).all()
+# Unpack 
+all_names = list(np.ravel(results))
+print(all_names)
+
+
+# # # psycopg2
+# # # sqlAlchemy
+# # # @app.route("/fetch/data")
+# # # def fetch_data():
+    
+# # #     data = conn.query()
+# # #     return json(data)
+
+# # # Create route that renders index.html
+# # @app.route("/")
+# # def home(): 
+
+# #     # # Find data from Mongo DB
+# #     # bushfire = mongo.db.bushfire.find_one()
+
+# #     # Return template and data
+# #     lat=db.query(fire_location.latitude).all()
+# #     return render_template("index.html", bushfire = lat)
+
+# # # Route that will trigger the scrape function
+# # @app.route("/scrape")
+# # def scrape():
+
+# #     # Call to run the scrape function
+# #     bushfire = scrape_fire.scrape()
+
+# #     # Update the Mongo DB each time when new scrape happen
+# #     mongo.db.bushfire.update({}, bushfire, upsert = True)
+
+# #     # Back to the home page
+# #     return redirect("/", code = 302)
 
 if __name__ == "__main__":
     app.run(debug = True)
+
+
+
+
+
+
+
+
+
+  

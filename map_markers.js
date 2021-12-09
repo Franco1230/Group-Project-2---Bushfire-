@@ -18,6 +18,6 @@ d3.csv("DataPreProcessing/Data/fire_nrt_M6_101673.csv").then(function(fireData) 
     var markers = L.circleMarker([fireData.latitude, fireData.longitude], {
         radius: mag*3,
       })
-    
+myMap.addLayer(markers);    
 
 });

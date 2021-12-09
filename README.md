@@ -12,5 +12,3 @@ Illustrate region of bushfire events on map using markers
 The temperature increase caused the fire to spread to other area 
 Latest government announcements on bushfire activity to prepare civilians for emergency
 Bushfire 2009 Vs. 2019/2020
-
-## Markers: Please create a databese in your PostgreSQL named bushFire_db and run the schema.sql file

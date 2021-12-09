@@ -17,10 +17,11 @@ import pandas as pd
 # cur = conn.cursor()
 
 
-
 engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 
-
+# Use the Inspector to explore the database and print the table names
+inspector = inspect(engine)
+print((inspector.get_table_names()))
 
 # Use Inspector to print the column names and types
 columns= inspector.get_columns('fire_location')

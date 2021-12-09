@@ -21,7 +21,7 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
-d3.csv("clean_fire_data.csv").then(function(fireData) {
+d3.csv("DataPreProcessing/Data/clean_fire_data.csv").then(function(fireData) {
 
  // Print the tvData
  console.log(fireData);

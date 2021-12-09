@@ -75,7 +75,7 @@ def scrape():
     news_df = pd.DataFrame.from_dict(bushfire, orient = "index")
     news_df_t = news_df.T
 
-    connection_string = "postgres:HnF071019@localhost:5432/countries_db"
+    connection_string = "postgres:HnF071019@localhost:5432/bushFire_db"
     engine = create_engine(f"postgresql://{connection_string}")
 
     return bushfire

@@ -43,18 +43,6 @@ fire_loc = Base.classes.fire_location
 forest_damage = Base.classes.forest_damage
 fire_latest_news = Base.classes.fire_latest_news
 
-<<<<<<< HEAD
-=======
-app = Flask(__name__)
-
-# Start a session to query the database
-session = Session(engine)
-
-results = session.query(fire_loc.latitude).all()
-# Unpack 
-all_names = list(np.ravel(results))
-print(all_names)
->>>>>>> fee0a08493e17d5ec6de834bea9c169af7a853fc
 
 # # # psycopg2
 # # # sqlAlchemy
@@ -82,13 +70,11 @@ def scrape():
     # Back to the home page
     return jsonify(bushfire)
 
-<<<<<<< HEAD
 # # # Route that will trigger the mapData function
 @app.route("/fetch/mapData")
 def mapData():
     # Start a session to query the database
     session = Session(engine)
-
     results = session.query(fire_loc.latitude).all()
 # Unpack 
     all_names = list(np.ravel(results))
@@ -104,15 +90,6 @@ def mapData():
 
 #     # Return template and data
 #     return render_template("map_index.html", mars=destination_data,tables=destination_data['facts_html'])
-=======
-# # # Route that will trigger the scrape function
-@app.route("/map")
-def map():
-    session = Session(engine)
-    loc_table = session.query(fire_loc).all()
-    session.close()
-    return jsonify(loc_table)
->>>>>>> fee0a08493e17d5ec6de834bea9c169af7a853fc
 
 # # # Route that will trigger the scrape function
 @app.route("/graph")

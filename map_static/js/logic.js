@@ -40,8 +40,8 @@ var overlayMaps = {
 
 // Create Map, Passing In satelliteMap & bushfires as Default Layers to Display on Load
 var myMap = L.map("map", {
-    center: [37.09, -95.71],
-    zoom: 2,
+    center: [-25.2744, -210.7751],
+    zoom: 4,
     layers: [satelliteMap, bushfires]
 });
 var geojson;
@@ -53,45 +53,22 @@ d3.json(bushfiresURL, function(data) {
     console.log(data)
     console.log(bushfiresURL)
         // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
-        data.latitude
+        // data.forEach(function(d) {
+        //     d.LatLng = new L.LatLng(d.latitude[0],
+        //        d.longitude[1])})
+  
+    //   }
+    data.forEach(function(d) {
+        var latlng=[d.latitude,d.lonitude]
+        if (latlng !=null){
 
-    // Function to Determine Color of Marker Based on the Magnitude of the Earthquake
-    function chooseColor(magnitude) {
-        return magnitude > 5 ? '#FF0000' :
-        magnitude > 4  ? '#f0a76b' :
-        magnitude > 3  ? '#f3ba4d' :
-        magnitude > 2 ? '#f3db4d' :
-        magnitude > 1   ? '#e1f34d' :
-        magnitude > 0   ? '#168f48' :
-                   '#FFEDA0';
-    }
-    
-    // // Set Up Legend
-    var legend = L.control({ position: "bottomright" });
-    legend.onAdd = function() {
-        var div = L.DomUtil.create("div", "info legend"),
-        scale = [0, 1, 2, 3, 4, 5];
         
-      ////////  created the html to be displayed in the legend
-        for(var i=0; i<6;i++)
-        {   
-            // if(i<5){
-            //     div.innerHTML+='<i style="background:' + chooseColor(scale[i]) + '"></i> ' +'<h1>'+i+'-'+(i+1)+'</h1>'
+        L.marker()
+          .bindPopup("<h1>" + d.sr + "</h1>")
+          .addTo(myMap);
+      }
+    }
+      )
+    
 
-            // }
-            // else {
-            //     div.innerHTML+='<h1>'+i+'+</h1>'
-            // }
-            
-            div.innerHTML +=
-            '<i style="background:' + chooseColor(scale[i] + 1) + '"></i> ' +
-            scale[i] + (scale[i + 1] ? '&ndash;' + scale[i + 1] + '<br>' : '+');
-            
-            // #style tag with i
-        }
-      
-        return div
-      };
-    // Add Legend to the Map
-    legend.addTo(myMap);
 });

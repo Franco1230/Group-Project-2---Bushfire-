@@ -87,21 +87,21 @@ def mapData():
     
     return jsonify(r)
 
-@app.route("/bushFireData")
-def bfdata():
-    import requests
-    import json
+# @app.route("/bushFireData")
+# def bfdata():
+#     import requests
+#     import json
     
-    params = {
-    "format": "json"
-    }
-    # Find one record of data from the mongo database
-    d=requests.get('http://127.0.0.1:5000/fetch/mapData',params=params)
-    # data = json.loads(d)
-    # Return template and data
-    with open('data.json','w') as f:
-        f.write(json.dumps(d))
-    return render_template("map_index.html")
+#     params = {
+#     "format": "json"
+#     }
+#     # Find one record of data from the mongo database
+#     d=requests.get('http://127.0.0.1:5000/fetch/mapData',params=params)
+#     # data = json.loads(d)
+#     # Return template and data
+#     with open('data.json','w') as f:
+#         f.write(json.dumps(d))
+#     return render_template("map_index.html")
 
 # # # Route that will trigger the scrape function
 @app.route("/graph")

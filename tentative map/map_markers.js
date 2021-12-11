@@ -13,7 +13,7 @@ var map = L.map("map", {
 });
 lightmap.addTo(map);
 
-d3.csv("DataPreProcessing/Data/fire_nrt_M6_101673.csv").then(function(fireData) {
+d3.json("DataPreProcessing/Data/fire_location.json").then(function(fireData) {
 
     var markers = L.circleMarker([fireData.latitude, fireData.longitude], {
         radius: mag*3,

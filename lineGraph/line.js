@@ -21,111 +21,58 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
-d3.csv("clean_fire_data.csv").then(function(fireData) {
+d3.csv("../DataPreProcessing/Data/fire_location.csv").then(function(fireData) {
 
  // Print the tvData
  console.log(fireData);
 
 
- // Cast the hours value to a number for each piece of tvData
- fireData.forEach(function(d) {
-    d.PercentForestBurnt = +d.PercentForestBurnt;
-  });
-// Configure a band scale for the horizontal axis with a padding of 0.1 (10%)
-var xBandScale = d3.scaleBand()
-.domain(fireData.map(d => d.State))
-.range([0, width])
-.padding(0.1);
+ fireData.forEach(function(data) {
+  data.acq_date = parseTime(data.acq_date);
+  data.miles = +data.miles;
+});
 
-// Create a linear scale for the vertical axis.
+// Configure a time scale with a range between 0 and the chartWidth
+// Set the domain for the xTimeScale function
+// d3.extent returns the an array containing the min and max values for the property specified
+var xTimeScale = d3.scaleTime()
+  .range([0, chartWidth])
+  .domain(d3.extent(milesData, data => data.acq_date));
+
+// Configure a linear scale with a range between the chartHeight and 0
+// Set the domain for the xLinearScale function
 var yLinearScale = d3.scaleLinear()
-.domain([0, d3.max(fireData, d => d.PercentForestBurnt)])
-.range([height, 0]);
+  .range([chartHeight, 0])
+  .domain([0, d3.max(milesData, data => data.miles)]);
 
-// Create two new functions passing our scales in as arguments
+// Create two new functions passing the scales in as arguments
 // These will be used to create the chart's axes
-var bottomAxis = d3.axisBottom(xBandScale);
-var leftAxis = d3.axisLeft(yLinearScale).ticks(10);
+var bottomAxis = d3.axisBottom(xTimeScale);
+var leftAxis = d3.axisLeft(yLinearScale);
 
-// Append two SVG group elements to the chartGroup area,
-// and create the bottom and left axes inside of them
+// Configure a drawLine function which will use our scales to plot the line's points
+var drawLine = d3
+  .line()
+  .x(data => xTimeScale(data.acq_date))
+  .y(data => yLinearScale(data.miles));
+
+// Append an SVG path and plot its points using the line function
+chartGroup.append("path")
+  // The drawLine function returns the instructions for creating the line for milesData
+  .attr("d", drawLine(fireData))
+  .classed("line", true);
+
+// Append an SVG group element to the SVG area, create the left axis inside of it
 chartGroup.append("g")
-.call(leftAxis);
+  .classed("axis", true)
+  .call(leftAxis);
 
+// Append an SVG group element to the SVG area, create the bottom axis inside of it
+// Translate the bottom axis to the bottom of the page
 chartGroup.append("g")
-.attr("transform", `translate(0, ${height})`)
-.call(bottomAxis);
-
-  // @TODO
-  // Create code to build the bar chart using the tvData.
-  var bars = chartGroup.selectAll(".bar")
-  .data(fireData)
-  .enter()
-  .append("rect")
-  .attr("class", "bar")
-  .attr("fill", "red")
-  .attr("x", d => xBandScale(d.State))
-  .attr("y", d => yLinearScale(d.PercentForestBurnt))
-  .attr("width", xBandScale.bandwidth())
-  .attr("height", d => height - yLinearScale(d.PercentForestBurnt));
-
-
-
-      // Create axes labels
-      chartGroup.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x", 0 - (height / 2))
-      .attr("dy", "1em")
-      .attr("class", "axisText")
-      .style("font-size", "30px")
-      .text("Forest Burnt (%)");
-
-    chartGroup.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
-      .attr("class", "axisText")
-      .style("font-size", "30px")
-      .text("States");
-
-      chartGroup.append("text")
-      .attr("x", (width / 2))             
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")  
-      .style("font-size", "54px") 
-      .style("text-decoration", "underline")  
-      .text("Total Fire Damage to Forests in Each State");
-      
-
-   
-    // // Initialize tool tip
-    // // ==============================
-    var toolTip = d3.tip()
-      .attr("class", "tooltip")
-      .offset([-30, 0])
-      .style("background-color", "blue")
-      .style("border", "solid")
-      .style("border-width", "1px")
-      .style("border-radius", "5px")
-      .html(function(d) {
-        return (`${d.State}<br>Forest burnt: ${d.PercentForestBurnt}% <br>Total forest (hectares): ${d.TotalForestHectares}`);
-      });
-
-    // Step 7: Create tooltip in the chart
-    // ==============================
-    chartGroup.call(toolTip);
-
-    // Step 8: Create event listeners to display and hide the tooltip
-    // ==============================
-    bars.on("mouseover", function(d) {
-      toolTip.show(d, this);
-    })
-      // onmouseout event
-      .on("mouseout", function(d, index) {
-        toolTip.hide(d);
-      });
-
-
-
-  }).catch(function(error) {
-    console.log(error);
-  });
+  .classed("axis", true)
+  .attr("transform", "translate(0, " + chartHeight + ")")
+  .call(bottomAxis);
+}).catch(function(error) {
+console.log(error);
+});

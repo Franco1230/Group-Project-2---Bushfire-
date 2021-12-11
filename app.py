@@ -83,7 +83,7 @@ def mapData():
     session.close()
     cols=['sr','latitude','longitude','acq_date']
     r=[{col: getattr(d, col) for col in cols} for d in loc_table]
-    return jsonify(r=r)
+    return jsonify(r=r[0])
 # @app.route("/bushFiremap")
 # def home():
 

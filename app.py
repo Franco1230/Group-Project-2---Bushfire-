@@ -7,7 +7,7 @@ from sqlalchemy.ext.automap import automap_base
 from flask import Flask, jsonify
 # Create an instance of Flask
 import scrape_fire
-import os
+import json
 import psycopg2
 from sqlalchemy.inspection import inspect
 import numpy as np
@@ -57,8 +57,8 @@ fire_latest_news = Base.classes.fire_latest_news
 def home(): 
 
     # # Find data from Mongo DB
-    print("This home")
-    return render_template("index.html")
+    example_embed='This string is from python'
+    return render_template("index.html",embed=example_embed)
 
 # # # Route that will trigger the scrape function
 @app.route("/scrape")
@@ -79,9 +79,11 @@ def mapData():
 # Unpack 
     all_names = list(np.ravel(results))
     print(all_names)
-    loc_table=session.query(fire_location).all()
+    loc_table=session.query(fire_loc).all()
     session.close()
-    return jsonify(loc_table)
+    cols=['sr','latitude','longitude','acq_date']
+    r=[{col: getattr(d, col) for col in cols} for d in loc_table]
+    return jsonify(r=r)
 # @app.route("/bushFiremap")
 # def home():
 

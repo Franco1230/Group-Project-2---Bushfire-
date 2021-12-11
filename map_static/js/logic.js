@@ -64,19 +64,16 @@ var myMap = L.map("map", {
     layers: [satelliteMap, bushfires]
 });
 var geojson;
-// Create a Layer Control + Pass in baseMaps and overlayMaps + Add the Layer Control to the Map
+// Create a dropdown Layer Control + Pass in baseMaps and overlayMaps + Add the Layer Control to the Map
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 // Grab the data with d3
 d3.json(bushfiresURL, function(data) {
     console.log(data)
         // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
-    function markerSize(magnitude) {
-        if (magnitude === 0) {
-          return 1;
-        }
-        return magnitude * 2;
-    }
+        L.circleMarker(fireData.latitude, fireData.longitude], {
+            //         radius: mag*3,
+            //       })
 
     // Function to Determine Color of Marker Based on the Magnitude of the Earthquake
     function chooseColor(magnitude) {

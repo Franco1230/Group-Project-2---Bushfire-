@@ -57,7 +57,7 @@ fire_latest_news = Base.classes.fire_latest_news
 def home(): 
 
     # # Find data from Mongo DB
-   
+    print("This home")
     return render_template("index.html")
 
 # # # Route that will trigger the scrape function

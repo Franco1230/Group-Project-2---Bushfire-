@@ -11,13 +11,14 @@ from sqlalchemy.inspection import inspect
 from sqlalchemy import create_engine
 import numpy as np
 import pandas as pd
+from flask import render_template
 # DATABASE_URL = ''
 # DATABASE_URL='postgresql://postgres:monash123@localhost/bushFire_db'
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # cur = conn.cursor()
 
 
-engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
+engine = create_engine(f'postgresql://postgres:HnF071019@localhost/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
@@ -63,7 +64,7 @@ def home():
 
     # Return template and data
     
-    lat=session.query(fire_location.latitude).all()
+    lat = session.query(fire_loc.latitude).all()
     return render_template("index.html", bushfire = lat)
 
 # # # Route that will trigger the scrape function

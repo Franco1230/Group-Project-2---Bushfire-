@@ -1,5 +1,6 @@
 # Dependencies
 import pandas as pd
+from pprint import pprint
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 from sqlalchemy import create_engine
@@ -18,19 +19,18 @@ parser = "html.parser"
 def scrape():
 
     # Connect to Mars News Site
-    browser = init_browser()
-    
+    browser = init_browser()    
 
     """ 9News Bushfire News """
-    # Visit to 9News Site
-    bushfire_news_url = "https://www.9news.com.au/bushfires"
+    # Visit to 9News website
+    bushfire_news_url = "http://www.9news.com.au/bushfires"
     browser.visit(bushfire_news_url)
 
     # HTML Object
     html = browser.html
 
     # Parse HTML with Beautiful Soup
-    news_soup = bs(html, parser)    
+    news_soup = bs(html, parser)
 
     # Retrieve the latest article's title
     news_title = news_soup.find("h3", class_ = "story__headline")
@@ -43,25 +43,14 @@ def scrape():
     print(news_paragraph)
 
 
-    """ JPL Mars Space Images - Featured Image """
-    # Connect to Featured Space Image site
-    featured_image_url = "http://www.9news.com.au/bushfires"
-    browser.visit(featured_image_url)
-
-    # HTML Object
-    html = browser.html
-
+    """ Featured Image from 9News"""
     # Parse HTML with Beautiful Soup
     image_soup = bs(html, parser)
 
     # Assign the full url string to a variable called "featured_image_url"
     featured_image = image_soup.body.find_all("figure", class_ = "feed__image")
     for i in featured_image:
-        print(i.img["src"])
-    featured_image_url = i.img["src"]
-
-    # Exit Browser
-    browser.quit()
+        featured_image_url = i.img["src"]
     
     """ Data Dictionary """
     # Create dictionary for all Mars Data
@@ -72,10 +61,19 @@ def scrape():
     bushfire["news_paragraph"] = news_paragraph  
     bushfire["featured_image_url"] = featured_image_url
 
-    news_df = pd.DataFrame.from_dict(bushfire, orient = "index")
-    news_df_t = news_df.T
-
-    connection_string = "postgres:HnF071019@localhost:5432/bushFire_db"
+    # Exit Browser
+    browser.quit()
+    
+    # Store the scraped data into a DataFrame
+    fire_news_df = pd.DataFrame.from_dict(bushfire, orient = "index")
+    fire_news_df_t = fire_news_df.T
+    fire_news_df_t = fire_news_df_t.set_index("news_title")
+        
+    # Connection to PostgreSQL
+    connection_string = "postgres:HnF071019@localhost:5433/bushFire_db"
     engine = create_engine(f"postgresql://{connection_string}")
+
+    # Store DataFrame into PostgreSQL
+    fire_news_df_t.to_sql(name = "fire_latest_news", con = engine, if_exists = "replace", index = True)
 
     return bushfire

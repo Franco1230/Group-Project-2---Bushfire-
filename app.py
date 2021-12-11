@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, func
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 from flask import Flask, jsonify
+from sqlalchemy.sql.operators import op
 # Create an instance of Flask
 import scrape_fire
 import json
@@ -24,12 +25,12 @@ engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
-print((inspector.get_table_names()))
+# print((inspector.get_table_names()))
 
 # Use Inspector to print the column names and types
 columns= inspector.get_columns('fire_location')
-for column in columns:
-    print(column["name"], column["type"])
+# for column in columns:
+#     print(column["name"], column["type"])
 
 # Use `engine.execute` to select and display 
 print(engine.execute('SELECT * FROM fire_location LIMIT 5').fetchall())
@@ -58,7 +59,7 @@ def home():
 
     # # Find data from Mongo DB
     example_embed='This string is from python'
-    return render_template("index.html",embed=example_embed)
+    return render_template("index.html")
 
 # # # Route that will trigger the scrape function
 @app.route("/scrape")
@@ -77,21 +78,30 @@ def mapData():
     session = Session(engine)
     results = session.query(fire_loc.latitude).all()
 # Unpack 
-    all_names = list(np.ravel(results))
-    print(all_names)
+    # all_names = list(np.ravel(results))
+    # print(all_names)
     loc_table=session.query(fire_loc).all()
     session.close()
     cols=['sr','latitude','longitude','acq_date']
     r=[{col: getattr(d, col) for col in cols} for d in loc_table]
-    return jsonify(r=r[0])
-# @app.route("/bushFiremap")
-# def home():
+    
+    return jsonify(r)
 
-#     # Find one record of data from the mongo database
-#     destination_data = db.items.find_one()
-
-#     # Return template and data
-#     return render_template("map_index.html", mars=destination_data,tables=destination_data['facts_html'])
+@app.route("/bushFireData")
+def bfdata():
+    import requests
+    import json
+    
+    params = {
+    "format": "json"
+    }
+    # Find one record of data from the mongo database
+    d=requests.get('http://127.0.0.1:5000/fetch/mapData',params=params)
+    # data = json.loads(d)
+    # Return template and data
+    with open('data.json','w') as f:
+        f.write(json.dumps(d))
+    return render_template("map_index.html")
 
 # # # Route that will trigger the scrape function
 @app.route("/graph")

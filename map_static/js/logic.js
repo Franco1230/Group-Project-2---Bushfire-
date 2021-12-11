@@ -2,7 +2,7 @@
 // Visualizing-Data-with-Leaflet - logic.js
 
 // Earthquakes GeoJSON URL Variables
-var bushfiresURL = "/fetch/mapData"//"DataPreProcessing/Data/fire_location.json"//"/fetch/mapData"
+var bushfiresURL = "../../data.json"//"DataPreProcessing/Data/fire_location.json"//"/fetch/mapData"
 
 var bushfires = new L.LayerGroup();
 
@@ -53,7 +53,7 @@ d3.json(bushfiresURL, function(data) {
     console.log(data)
     console.log(bushfiresURL)
         // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
-      
+        data.latitude
 
     // Function to Determine Color of Marker Based on the Magnitude of the Earthquake
     function chooseColor(magnitude) {

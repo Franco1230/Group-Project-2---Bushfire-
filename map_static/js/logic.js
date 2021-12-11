@@ -2,7 +2,7 @@
 // Visualizing-Data-with-Leaflet - logic.js
 
 // Earthquakes GeoJSON URL Variables
-var earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+var earthquakesURL = "/fetch/mapData"
 var platesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
 
 
@@ -54,7 +54,7 @@ L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 // Grab the data with d3
 d3.json(earthquakesURL, function(earthquakeData) {
-    
+    console.log(earthquakeData)
         // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
     function markerSize(magnitude) {
         if (magnitude === 0) {

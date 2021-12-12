@@ -2,7 +2,7 @@
 // Visualizing-Data-with-Leaflet - logic.js
 
 // Earthquakes GeoJSON URL Variables
-var bushfiresURL = "../../data.json"//"/fetch/mapData"//
+var bushfiresURL = "/fetch/mapData"// "../../data.json"//"//
 
 var bushfires = new L.LayerGroup();
 
@@ -53,7 +53,7 @@ d3.json(bushfiresURL, function(response) {
     console.log(response)
     console.log(bushfiresURL)
     L.marker([31, -115]).addTo(myMap);
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < response.length; i+=100) {
         var location =[response[i].latitude,response[i].longitude];//
     
         if(typeof location === 'undefined'){
@@ -69,7 +69,7 @@ d3.json(bushfiresURL, function(response) {
             console.log('undefined lng')
           }
           if(location[0] != null && location[1] != null && location.length == 2){
-            L.marker([location[1], location[0]]).addTo(myMap);
+            L.marker([location[0], location[1]]).addTo(myMap);
             console.log('worked')
           }
         }

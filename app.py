@@ -1,5 +1,5 @@
 # Dependencies
-from scrape_fire import scrape
+import scrape_fire
 from sqlalchemy import inspect
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import Session
@@ -21,7 +21,7 @@ from flask import Flask, jsonify
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:HnF071019@localhost:5433/bushFire_db')
+engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
@@ -60,7 +60,7 @@ fire_latest_news = Base.classes.fire_latest_news
 @app.route("/")
 def home():
 
-    scrape()
+    scrape_fire.scrape()
     session = Session(engine)
     # # Find data from Mongo DB
     results = session.query(fire_loc.latitude).all()

@@ -2,7 +2,7 @@
 // Visualizing-Data-with-Leaflet - logic.js
 
 // Earthquakes GeoJSON URL Variables
-var bushfiresURL = "/fetch/mapData"// "../../data.json"//"//
+var bushfiresURL = "../../data.json"//"//"/fetch/mapData"// 
 
 var bushfires = new L.LayerGroup();
 

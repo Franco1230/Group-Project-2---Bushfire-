@@ -74,16 +74,22 @@ def scrape():
 
     session = Session(engine)
 
-    fire_news = session.query(fire_latest_news.news_title).all()
+    fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
     session.close()
-    cols=['news_title']
-    r=[{col: getattr(d, col) for col in cols} for d in fire_news]
+
+    fire_news_list = []
+    for title, paragraph, image_url in fire_news:
+        fire_news_dict = {}
+        fire_news_dict["news_title"] = title
+        fire_news_dict["news_paragraph"] = paragraph
+        fire_news_dict["featured_image_url"] = image_url
+        fire_news_list.append(fire_news_dict)
 
     # Call to run the scrape function
     # bushfire = scrape_fire.scrape()
 
     # Back to the home page
-    return jsonify(r)
+    return jsonify(fire_news_list)
 
 # # # Route that will trigger the mapData function
 @app.route("/fetch/mapData")

@@ -20,14 +20,14 @@ from flask import Flask, jsonify
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:HnF071019@localhost/bushFire_db')
+engine = create_engine(f'postgresql://postgres:HnF071019@localhost:5433/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
 print((inspector.get_table_names()))
 
 # Use Inspector to print the column names and types
-columns= inspector.get_columns('fire_location')
+columns = inspector.get_columns('fire_location')
 for column in columns:
     print(column["name"], column["type"])
 
@@ -54,21 +54,25 @@ fire_latest_news = Base.classes.fire_latest_news
 
 # # # Create route that renders index.html
 @app.route("/")
-def home(): 
+def home():
 
     # # Find data from Mongo DB
     example_embed='This string is from python'
-    return render_template("index.html",embed=example_embed)
+    return render_template("index.html",embed = example_embed)
 
 # # # Route that will trigger the scrape function
 @app.route("/scrape")
 def scrape():
 
+    session = Session(engine)
+
+    fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
+
     # Call to run the scrape function
-    bushfire = scrape_fire.scrape()
+    # bushfire = scrape_fire.scrape()
 
     # Back to the home page
-    return jsonify(bushfire)
+    return jsonify(fire_news)
 
 # # # Route that will trigger the mapData function
 @app.route("/fetch/mapData")

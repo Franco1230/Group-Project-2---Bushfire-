@@ -91,8 +91,8 @@
           </button>
           <nav>
             <li><a href="#">Overview</a></li>
+            <li><a href="/scrape">Fire News</a></li>
             <li><a href="#">Impact</a></li>
-            <li><a href="#">Support</a></li>
             <li><a href="#">Contact</a></li>
             <li><a href="..\map_index.html">Map</a></li>
                     </ul>
@@ -111,7 +111,29 @@
     </section>
     
     </body>
+<body>
+  <!-- Add Recent News -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="media">
+        <div class="media-body">
+          <h2 style="color: white"><b>Most Recent Bushfire News</b></h2>
+          <h4 class="media-heading" style="color: white"><b>{{bushfire.news_title}}</b></h4>
+          <h5 style="color: white"><p>{{bushfire.news_paragraph}}</p></h5>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Add Featured Image -->
+  <div class="row">
+    <div class="col-md-9">
+      <h2 style="color: white"><b>Latest Bushfire Image</b></h2>
+        <img src="{{bushfire.featured_image_url}}" class="img-responsive">
+    </div>
+  </div>
+</div>
+</body>
 <body>
     <div class="row">
   

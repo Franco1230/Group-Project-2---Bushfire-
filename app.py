@@ -1,27 +1,27 @@
 # Dependencies
 import scrape_fire
+from flask_pymongo import PyMongo
+
 from sqlalchemy import inspect
-from sqlalchemy import create_engine, func
 from sqlalchemy.orm import Session
-from sqlalchemy.ext.automap import automap_base
-from flask import Flask, jsonify
-from sqlalchemy.sql.operators import op
-# Create an instance of Flask
-import scrape_fire
-import json
-import psycopg2
+from sqlalchemy import create_engine, func
 from sqlalchemy.inspection import inspect
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.sql.operators import op
+
 import numpy as np
 import pandas as pd
-from flask import render_template
-from flask import Flask, jsonify
+
+from flask import render_template, Flask, jsonify, redirect
+
 # DATABASE_URL = ''
 # DATABASE_URL='postgresql://postgres:monash123@localhost/bushFire_db'
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
+engine = create_engine(f'postgresql://postgres:HnF071019@localhost:5433/bushFire_db')
+mongo = PyMongo(app, uri = "mongodb://localhost:27017/bushfire_db")
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
@@ -42,7 +42,7 @@ Base.prepare(engine, reflect=True)
 
 fire_loc = Base.classes.fire_location
 forest_damage = Base.classes.forest_damage
-fire_latest_news = Base.classes.fire_latest_news
+# fire_latest_news = Base.classes.fire_latest_news
 
 # session = Session(engine)
 
@@ -59,37 +59,41 @@ fire_latest_news = Base.classes.fire_latest_news
 # # # Create route that renders index.html
 @app.route("/")
 def home():
-
-    scrape_fire.scrape()
+    
     session = Session(engine)
     # # Find data from Mongo DB
+    bushfire = mongo.db.bushfire.find_one()
     results = session.query(fire_loc.latitude).all()
     example_embed='This string is from python'
     session.close()
-    return render_template("index.html")
+    return render_template("index.html", bushfire = bushfire)
 
 # # # Route that will trigger the scrape function
 @app.route("/scrape")
 def scrape():
 
-    session = Session(engine)
+    bushfire = scrape_fire.scrape()
 
-    fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
-    session.close()
+    # Update the Mongo DB each time when new scrape happen
+    mongo.db.bushfire.update({}, bushfire, upsert = True)
 
-    fire_news_list = []
-    for title, paragraph, image_url in fire_news:
-        fire_news_dict = {}
-        fire_news_dict["news_title"] = title
-        fire_news_dict["news_paragraph"] = paragraph
-        fire_news_dict["featured_image_url"] = image_url
-        fire_news_list.append(fire_news_dict)
+    # session = Session(engine)
 
-    # Call to run the scrape function
-    # bushfire = scrape_fire.scrape()
+    # fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
+    # session.close()
+
+    # fire_news_list = []
+    # for title, paragraph, image_url in fire_news:
+    #     fire_news_dict = {}
+    #     fire_news_dict["news_title"] = title
+    #     fire_news_dict["news_paragraph"] = paragraph
+    #     fire_news_dict["featured_image_url"] = image_url
+    #     fire_news_list.append(fire_news_dict)
+
+
 
     # Back to the home page
-    return jsonify(fire_news_list)
+    return redirect("/", code = 302)
 
 # # # Route that will trigger the mapData function
 @app.route("/fetch/mapData")

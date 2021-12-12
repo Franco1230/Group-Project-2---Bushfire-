@@ -1,5 +1,5 @@
 # Dependencies
-
+from scrape_fire import scrape
 from sqlalchemy import inspect
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import Session
@@ -21,26 +21,16 @@ from flask import Flask, jsonify
 # cur = conn.cursor()
 
 app = Flask(__name__)
-<<<<<<< HEAD
-engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
-=======
 engine = create_engine(f'postgresql://postgres:HnF071019@localhost:5433/bushFire_db')
->>>>>>> fef6e9bb3ea9415c69269586e7c9eb55e988ee47
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
 # print((inspector.get_table_names()))
 
 # Use Inspector to print the column names and types
-<<<<<<< HEAD
 columns= inspector.get_columns('fire_location')
 # for column in columns:
 #     print(column["name"], column["type"])
-=======
-columns = inspector.get_columns('fire_location')
-for column in columns:
-    print(column["name"], column["type"])
->>>>>>> fef6e9bb3ea9415c69269586e7c9eb55e988ee47
 
 # Use `engine.execute` to select and display 
 print(engine.execute('SELECT * FROM fire_location LIMIT 5').fetchall())
@@ -54,7 +44,10 @@ fire_loc = Base.classes.fire_location
 forest_damage = Base.classes.forest_damage
 fire_latest_news = Base.classes.fire_latest_news
 
+# session = Session(engine)
 
+# fire_news = session.query(fire_latest_news.news_title).all()
+# print(fire_news)
 # # # psycopg2
 # # # sqlAlchemy
 # # # @app.route("/fetch/data")
@@ -65,22 +58,15 @@ fire_latest_news = Base.classes.fire_latest_news
 
 # # # Create route that renders index.html
 @app.route("/")
-<<<<<<< HEAD
-def home(): 
-    session = Session(engine)
-=======
 def home():
 
->>>>>>> fef6e9bb3ea9415c69269586e7c9eb55e988ee47
+    scrape()
+    session = Session(engine)
     # # Find data from Mongo DB
     results = session.query(fire_loc.latitude).all()
     example_embed='This string is from python'
-<<<<<<< HEAD
     session.close()
     return render_template("index.html")
-=======
-    return render_template("index.html",embed = example_embed)
->>>>>>> fef6e9bb3ea9415c69269586e7c9eb55e988ee47
 
 # # # Route that will trigger the scrape function
 @app.route("/scrape")
@@ -89,13 +75,15 @@ def scrape():
     session = Session(engine)
 
     fire_news = session.query(fire_latest_news.news_title).all()
-    print(fire_news)
+    session.close()
+    cols=['news_title']
+    r=[{col: getattr(d, col) for col in cols} for d in fire_news]
 
     # Call to run the scrape function
     # bushfire = scrape_fire.scrape()
 
     # Back to the home page
-    return jsonify(fire_news)
+    return jsonify(r)
 
 # # # Route that will trigger the mapData function
 @app.route("/fetch/mapData")

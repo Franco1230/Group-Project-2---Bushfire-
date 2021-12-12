@@ -74,6 +74,6 @@ def scrape():
     engine = create_engine(f"postgresql://{connection_string}")
 
     # Store DataFrame into PostgreSQL
-    fire_news_df_t.to_sql(name = "fire_latest_news", con = engine, if_exists = "replace", index = True)
+    fire_news_df_t.to_sql(name = "fire_latest_news", con = engine, if_exists = "append", index = True)
 
     return bushfire

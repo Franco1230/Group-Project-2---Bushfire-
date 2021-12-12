@@ -21,7 +21,7 @@ from flask import Flask, jsonify
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:HnF071019@localhost/bushFire_db')
+engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
@@ -56,9 +56,11 @@ fire_latest_news = Base.classes.fire_latest_news
 # # # Create route that renders index.html
 @app.route("/")
 def home(): 
-
+    session = Session(engine)
     # # Find data from Mongo DB
+    results = session.query(fire_loc.latitude).all()
     example_embed='This string is from python'
+    session.close()
     return render_template("index.html")
 
 # # # Route that will trigger the scrape function

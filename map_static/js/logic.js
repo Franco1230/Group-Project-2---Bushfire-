@@ -2,7 +2,7 @@
 // Visualizing-Data-with-Leaflet - logic.js
 
 // Earthquakes GeoJSON URL Variables
-var bushfiresURL = "../../data.json"//"DataPreProcessing/Data/fire_location.json"//"/fetch/mapData"
+var bushfiresURL = "../../data.json"//"/fetch/mapData"//
 
 var bushfires = new L.LayerGroup();
 
@@ -49,26 +49,32 @@ var geojson;
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 // Grab the data with d3
-d3.json(bushfiresURL, function(data) {
-    console.log(data)
+d3.json(bushfiresURL, function(response) {
+    console.log(response)
     console.log(bushfiresURL)
-        // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
-        // data.forEach(function(d) {
-        //     d.LatLng = new L.LatLng(d.latitude[0],
-        //        d.longitude[1])})
-  
-    //   }
-    data.forEach(function(d) {
-        var latlng=[d.latitude,d.lonitude]
-        if (latlng !=null){
-
-        
-        L.marker()
-          .bindPopup("<h1>" + d.sr + "</h1>")
-          .addTo(myMap);
+    L.marker([31, -115]).addTo(myMap);
+    for (var i = 0; i < 100; i++) {
+        var location =[response[i].latitude,response[i].longitude];//
+    
+        if(typeof location === 'undefined'){
+          // element does not exist
+          console.log('undefined')
+        }
+    
+        else {
+          if(typeof location[0] === 'undefined'){
+            console.log('undefined lat')
+          }
+          if(typeof location[1] === 'undefined'){
+            console.log('undefined lng')
+          }
+          if(location[0] != null && location[1] != null && location.length == 2){
+            L.marker([location[1], location[0]]).addTo(myMap);
+            console.log('worked')
+          }
+        }
       }
-    }
-      )
+      
     
 
 });

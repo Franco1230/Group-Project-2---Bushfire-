@@ -66,7 +66,8 @@ def scrape():
 
     session = Session(engine)
 
-    fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
+    fire_news = session.query(fire_latest_news.news_title).all()
+    print(fire_news)
 
     # Call to run the scrape function
     # bushfire = scrape_fire.scrape()

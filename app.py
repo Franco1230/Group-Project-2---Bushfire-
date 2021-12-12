@@ -21,7 +21,7 @@ from flask import Flask, jsonify
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
+engine = create_engine(f'postgresql://postgres:HnF071019@localhost/bushFire_db')
 
 # Use the Inspector to explore the database and print the table names
 inspector = inspect(engine)
@@ -106,6 +106,7 @@ def mapData():
 # # # Route that will trigger the scrape function
 @app.route("/graph")
 def map():
+    session = Session(engine)
     loc_table=session.query(fire_loc).all()##
     return jsonify(loc_table)
 

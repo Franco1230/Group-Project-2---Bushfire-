@@ -14,7 +14,7 @@
     background-image: url("https://createdigital.org.au/wp-content/uploads/2020/01/create-online-Australian-bushfires-timeline-rural-fire-service-truck-featured.jpg");
   }
   </style>
-  <style>
+  <!-- <style>
     * {
       box-sizing: border-box;
     }
@@ -77,7 +77,7 @@
         flex-direction: column;
       }
     }
-    </style>
+    </style> -->
     <header>
       <h2>The  Black Saturday Vs The Black Summer</h2>
     </header>
@@ -90,8 +90,8 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <nav>
-            <li><a href="#">Overview</a></li>
-            <li><a href="/scrape">Fire News</a></li>
+            <li><a href="#">Home</a></li>
+            <!-- <li><a href="/scrape">Fire News</a></li> -->
             <li><a href="#">Impact</a></li>
             <li><a href="#">Contact</a></li>
             <li><a href="..\map_index.html">Map</a></li>
@@ -117,6 +117,7 @@
       <div class="media">
         <div class="media-body">
           <h2 style="color: white"><b>Recent Bushfire News</b></h2>
+          <a class="btn btn-lg text-white" style="background-color:grey; color: white" href="/scrape" role="button">Scrape Bushfire News</a>
           <h4 class="media-heading" style="color: white"><b>News from 9News<br>{{bushfire.ninenews_title}}</b></h4>
           <h5 style="color: white"><p>{{bushfire.ninenews_paragraph}}</p></h5>
           <h4 class="media-heading" style="color: white"><b>News from ABCNews<br>{{bushfire.abcnews_title}}</b></h4>

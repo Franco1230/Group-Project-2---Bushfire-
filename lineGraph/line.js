@@ -21,15 +21,15 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
-d3.csv("../DataPreProcessing/Data/fire_location.csv").then(function(fireData) {
+d3.csv("../DataPreProcessing/Data/fire_location_counts.csv").then(function(fireData) {
 
  // Print the tvData
  console.log(fireData);
 
 
  fireData.forEach(function(data) {
-  data.acq_date = parseTime(data.acq_date);
-  data.miles = +data.miles;
+  data.Date = parseTime(data.Date);
+  data.Count = +data.Count;
 });
 
 // Configure a time scale with a range between 0 and the chartWidth
@@ -37,13 +37,13 @@ d3.csv("../DataPreProcessing/Data/fire_location.csv").then(function(fireData) {
 // d3.extent returns the an array containing the min and max values for the property specified
 var xTimeScale = d3.scaleTime()
   .range([0, chartWidth])
-  .domain(d3.extent(milesData, data => data.acq_date));
+  .domain(d3.extent(fireData, data => data.Date));
 
 // Configure a linear scale with a range between the chartHeight and 0
 // Set the domain for the xLinearScale function
 var yLinearScale = d3.scaleLinear()
   .range([chartHeight, 0])
-  .domain([0, d3.max(milesData, data => data.miles)]);
+  .domain([0, d3.max(fireData, data => data.Count)]);
 
 // Create two new functions passing the scales in as arguments
 // These will be used to create the chart's axes
@@ -53,8 +53,8 @@ var leftAxis = d3.axisLeft(yLinearScale);
 // Configure a drawLine function which will use our scales to plot the line's points
 var drawLine = d3
   .line()
-  .x(data => xTimeScale(data.acq_date))
-  .y(data => yLinearScale(data.miles));
+  .x(data => xTimeScale(data.Date))
+  .y(data => yLinearScale(data.Count));
 
 // Append an SVG path and plot its points using the line function
 chartGroup.append("path")

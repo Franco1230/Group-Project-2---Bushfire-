@@ -12,14 +12,14 @@ var satelliteMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}
     id: "mapbox.satellite",
     accessToken: API_KEY
 });
-var grayscaleMap =  L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+var darkMap =  L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "dark-v10",
     accessToken: API_KEY
 });
 
-var outdoorsMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+var grayscaleMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "light-v10",
@@ -30,7 +30,7 @@ var outdoorsMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tile
 var baseMaps = {
     "Satellite": satelliteMap,
     "Grayscale": grayscaleMap,
-    "Outdoors": outdoorsMap
+    "Dark Map": darkMap
 };
 
 // Create Overlay Object to Hold Overlay Layers
@@ -40,7 +40,7 @@ var overlayMaps = {
 
 // Create Map, Passing In satelliteMap & bushfires as Default Layers to Display on Load
 var myMap = L.map("map", {
-    center: [-25.2744, -210.7751],
+    center: [-25.274398, 133.775136],
     zoom: 4,
     layers: [satelliteMap, bushfires]
 });

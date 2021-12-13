@@ -23,8 +23,8 @@ def scrape():
 
     """ 9News Bushfire News """
     # Visit to 9News website
-    bushfire_news_url = "http://www.9news.com.au/bushfires"
-    browser.visit(bushfire_news_url)
+    ninenews_url = "http://www.9news.com.au/bushfires"
+    browser.visit(ninenews_url)
 
     # HTML Object
     html = browser.html
@@ -40,9 +40,9 @@ def scrape():
     ninenews_paragraph = ninenews_soup.find("div", class_ = "story__abstract")
     ninenews_paragraph = ninenews_paragraph.text.strip()
 
-    """ Featured Image from 9News"""
-    # Parse HTML with Beautiful Soup
-    image_soup = bs(html, parser)
+    # """ Featured Image from 9News"""
+    # # Parse HTML with Beautiful Soup
+    # image_soup = bs(html, parser)
 
     # # Assign the full url string to a variable called "featured_image_url"
     # featured_image = image_soup.body.find_all("figure", class_ = "story__media story__media--has-type-icon")
@@ -50,15 +50,14 @@ def scrape():
     #     featured_image_url = i.img["src"]
 
     # Visit to ABCNews website
-    bushfire_news_url = "http://www.abc.net.au/news/topic/bushfire"
-    browser.visit(bushfire_news_url)
+    abcnews_url = "http://www.abc.net.au/news/topic/bushfire"
+    browser.visit(abcnews_url)
 
     # HTML Object
     html = browser.html
 
     # Parse HTML with Beautiful Soup
-    abcnews_soup = bs(html, parser)
-    
+    abcnews_soup = bs(html, parser)    
     
     # Retrieve the latest article's title
     abcnews_title = abcnews_soup.find("span", class_ = "_3UTrd")
@@ -68,16 +67,24 @@ def scrape():
     abcnews_paragraph = abcnews_soup.find("div", class_ = "_1yL-m rMkro _1cBaI _3PhF6 _10YQT")
     abcnews_paragraph = abcnews_paragraph.text.strip()
 
-    """ Featured Image from 9News"""
+    # Visit to ABCNews website
+    vicgovnews_url = "http://www.wildlife.vic.gov.au/home/biodiversity-bushfire-response-and-recovery"
+    browser.visit(vicgovnews_url)
+
+    # HTML Object
+    html = browser.html
+
     # Parse HTML with Beautiful Soup
-    image_soup = bs(html, parser)
-
-    # Assign the full url string to a variable called "featured_image_url"
-    featured_image = image_soup.body.find_all("figure", class_ = "feed__image")
-    for i in featured_image:
-        featured_image_url = i.img["src"]
-
+    vicgovnews_soup = bs(html, parser)    
     
+    # Retrieve the latest article's title
+    vicgovnews_title = vicgovnews_soup.find("h1", class_ = "title-banner__heading")
+    vicgovnews_title = vicgovnews_title.text.strip()
+
+    # Retrieve the latest article's paragraph
+    vicgovnews_paragraph = vicgovnews_soup.find("p", class_ = "title-banner__descr")
+    vicgovnews_paragraph = vicgovnews_paragraph.text.strip()
+        
     """ Data Dictionary """
     # Create dictionary for all Mars Data
     bushfire = {}
@@ -87,7 +94,9 @@ def scrape():
     bushfire["ninenews_paragraph"] = ninenews_paragraph  
     # bushfire["featured_image_url"] = featured_image_url
     bushfire["abcnews_title"] = abcnews_title
-    bushfire["abcnews_paragraph"] = abcnews_paragraph 
+    bushfire["abcnews_paragraph"] = abcnews_paragraph
+    bushfire["vicgovnews_title"] = vicgovnews_title
+    bushfire["vicgovnews_paragraph"] = vicgovnews_paragraph
 
     # Exit Browser
     browser.quit()

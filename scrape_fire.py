@@ -40,15 +40,6 @@ def scrape():
     ninenews_paragraph = ninenews_soup.find("div", class_ = "story__abstract")
     ninenews_paragraph = ninenews_paragraph.text.strip()
 
-    # """ Featured Image from 9News"""
-    # # Parse HTML with Beautiful Soup
-    # image_soup = bs(html, parser)
-
-    # # Assign the full url string to a variable called "featured_image_url"
-    # featured_image = image_soup.body.find_all("figure", class_ = "story__media story__media--has-type-icon")
-    # for i in featured_image:
-    #     featured_image_url = i.img["src"]
-
     # Visit to ABCNews website
     abcnews_url = "http://www.abc.net.au/news/topic/bushfire"
     browser.visit(abcnews_url)
@@ -92,7 +83,6 @@ def scrape():
     # Append news_title and news_paragraph to mars_data
     bushfire["ninenews_title"] = ninenews_title
     bushfire["ninenews_paragraph"] = ninenews_paragraph  
-    # bushfire["featured_image_url"] = featured_image_url
     bushfire["abcnews_title"] = abcnews_title
     bushfire["abcnews_paragraph"] = abcnews_paragraph
     bushfire["vicgovnews_title"] = vicgovnews_title

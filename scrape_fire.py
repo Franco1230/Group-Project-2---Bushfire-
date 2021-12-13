@@ -30,18 +30,43 @@ def scrape():
     html = browser.html
 
     # Parse HTML with Beautiful Soup
-    news_soup = bs(html, parser)
+    ninenews_soup = bs(html, parser)
 
     # Retrieve the latest article's title
-    news_title = news_soup.find("h3", class_ = "story__headline")
-    news_title = news_title.text.strip()
-    print(news_title)
+    ninenews_title = ninenews_soup.find("h3", class_ = "story__headline")
+    ninenews_title = ninenews_title.text.strip()
+    
+    # Retrieve the latest article's paragraph
+    ninenews_paragraph = ninenews_soup.find("div", class_ = "story__abstract")
+    ninenews_paragraph = ninenews_paragraph.text.strip()
+
+    """ Featured Image from 9News"""
+    # Parse HTML with Beautiful Soup
+    image_soup = bs(html, parser)
+
+    # # Assign the full url string to a variable called "featured_image_url"
+    # featured_image = image_soup.body.find_all("figure", class_ = "story__media story__media--has-type-icon")
+    # for i in featured_image:
+    #     featured_image_url = i.img["src"]
+
+    # Visit to ABCNews website
+    bushfire_news_url = "http://www.abc.net.au/news/topic/bushfire"
+    browser.visit(bushfire_news_url)
+
+    # HTML Object
+    html = browser.html
+
+    # Parse HTML with Beautiful Soup
+    abcnews_soup = bs(html, parser)
+    
+    
+    # Retrieve the latest article's title
+    abcnews_title = abcnews_soup.find("span", class_ = "_3UTrd")
+    abcnews_title = abcnews_title.text.strip()
 
     # Retrieve the latest article's paragraph
-    news_paragraph = news_soup.find("div", class_ = "story__abstract")
-    news_paragraph = news_paragraph.text.strip()
-    print(news_paragraph)
-
+    abcnews_paragraph = abcnews_soup.find("div", class_ = "_1yL-m rMkro _1cBaI _3PhF6 _10YQT")
+    abcnews_paragraph = abcnews_paragraph.text.strip()
 
     """ Featured Image from 9News"""
     # Parse HTML with Beautiful Soup
@@ -51,15 +76,18 @@ def scrape():
     featured_image = image_soup.body.find_all("figure", class_ = "feed__image")
     for i in featured_image:
         featured_image_url = i.img["src"]
+
     
     """ Data Dictionary """
     # Create dictionary for all Mars Data
     bushfire = {}
 
     # Append news_title and news_paragraph to mars_data
-    bushfire["news_title"] = news_title
-    bushfire["news_paragraph"] = news_paragraph  
-    bushfire["featured_image_url"] = featured_image_url
+    bushfire["ninenews_title"] = ninenews_title
+    bushfire["ninenews_paragraph"] = ninenews_paragraph  
+    # bushfire["featured_image_url"] = featured_image_url
+    bushfire["abcnews_title"] = abcnews_title
+    bushfire["abcnews_paragraph"] = abcnews_paragraph 
 
     # Exit Browser
     browser.quit()
@@ -67,7 +95,7 @@ def scrape():
     # Store the scraped data into a DataFrame
     fire_news_df = pd.DataFrame.from_dict(bushfire, orient = "index")
     fire_news_df_t = fire_news_df.T
-    fire_news_df_t = fire_news_df_t.set_index("news_title")
+    fire_news_df_t = fire_news_df_t.set_index("ninenews_title")
         
     # Connection to PostgreSQL
     connection_string = "postgres:HnF071019@localhost:5433/bushFire_db"

@@ -42,7 +42,6 @@ Base.prepare(engine, reflect=True)
 
 fire_loc = Base.classes.fire_location
 forest_damage = Base.classes.forest_damage
-# fire_latest_news = Base.classes.fire_latest_news
 
 # session = Session(engine)
 
@@ -61,10 +60,13 @@ forest_damage = Base.classes.forest_damage
 def home():
     
     session = Session(engine)
+
     # # Find data from Mongo DB
     bushfire = mongo.db.bushfire.find_one()
+
     results = session.query(fire_loc.latitude).all()
     example_embed='This string is from python'
+
     session.close()
     return render_template("index.html", bushfire = bushfire)
 
@@ -76,21 +78,6 @@ def scrape():
 
     # Update the Mongo DB each time when new scrape happen
     mongo.db.bushfire.update({}, bushfire, upsert = True)
-
-    # session = Session(engine)
-
-    # fire_news = session.query(fire_latest_news.news_title, fire_latest_news.news_paragraph, fire_latest_news.featured_image_url).all()
-    # session.close()
-
-    # fire_news_list = []
-    # for title, paragraph, image_url in fire_news:
-    #     fire_news_dict = {}
-    #     fire_news_dict["news_title"] = title
-    #     fire_news_dict["news_paragraph"] = paragraph
-    #     fire_news_dict["featured_image_url"] = image_url
-    #     fire_news_list.append(fire_news_dict)
-
-
 
     # Back to the home page
     return redirect("/", code = 302)
@@ -131,18 +118,8 @@ def mapData():
 @app.route("/graph")
 def map():
     session = Session(engine)
-    loc_table=session.query(fire_loc).all()##
+    loc_table=session.query(fire_loc).all()
     return jsonify(loc_table)
 
 if __name__ == "__main__":
     app.run(debug = True)
-
-
-
-
-
-
-
-
-
-  

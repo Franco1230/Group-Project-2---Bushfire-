@@ -115,11 +115,17 @@ def mapData():
 #     return render_template("map_index.html")
 
 # # # Route that will trigger the scrape function
-@app.route("/graph")
+
+@app.route("/map")
 def map():
-    session = Session(engine)
-    loc_table=session.query(fire_loc).all()
-    return jsonify(loc_table)
+
+     return render_template("map_index.html")
+
+# @app.route("/graph")
+# def map():
+#     session = Session(engine)
+#     loc_table=session.query(fire_loc).all()
+#     return jsonify(loc_table)
 
 if __name__ == "__main__":
     app.run(debug = True)

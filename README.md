@@ -1,7 +1,5 @@
 # Group-project-3-10-years-after-Black-Saturday
 
-Please [click here](https://franco1230.github.io/Group-project-3-10-years-after-Black-Saturday/templates/)
-
 Project: Bushfire in Australia 2009/2019 - 2020
 Team Member: Miley Kotamee, Huma Chaudhry, Franco Hung, Sean Scotland
 

@@ -20,7 +20,7 @@ from flask import render_template, Flask, jsonify, redirect
 # cur = conn.cursor()
 
 app = Flask(__name__)
-engine = create_engine(f'postgresql://postgres:HnF071019@localhost:5433/bushFire_db')
+engine = create_engine(f'postgresql://postgres:monash123@localhost/bushFire_db')
 mongo = PyMongo(app, uri = "mongodb://localhost:27017/bushfire_db")
 
 # Use the Inspector to explore the database and print the table names
